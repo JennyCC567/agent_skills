@@ -1,0 +1,155 @@
+{
+  "industry": "国内电子商务",
+  "industry_code": "DOMESTIC_EC",
+  "description": "适用于国内电商平台/商家OD诊断模板，包含运营效率、流量运营、供应链、内容电商、直播电商等指标",
+  
+  "company_profile": {
+    "typical_scale": "20-500人",
+    "life_stage": "初创期/成长期/规模期",
+    "org_structure": "品类制/平台制/项目制",
+    "typical_challenges": [
+      "流量成本上升",
+      "供应链响应速度",
+      "内容运营能力",
+      "直播电商转型",
+      "人才流动性高"
+    ]
+  },
+
+  "diagnosis_modules": {
+    "traffic_operations": {
+      "name": "流量运营能力",
+      "description": "评估流量获取和转化效率",
+      "dimensions": [
+        {
+          "id": "TO001",
+          "name": "流量结构健康度",
+          "question": "付费/自然/私域流量的占比？",
+          "options": ["均衡健康", "付费偏高", "严重依赖付费", "无规划"],
+          "weight": 1.3
+        },
+        {
+          "id": "TO002",
+          "name": "私域运营成熟度",
+          "question": "私域流量池建设和运营情况？",
+          "options": ["成熟体系", "初步建立", "刚起步", "未开始"],
+          "weight": 1.4
+        }
+      ]
+    },
+    
+    "supply_chain_efficiency": {
+      "name": "供应链效率",
+      "description": "评估电商供应链响应能力",
+      "dimensions": [
+        {
+          "id": "SE001",
+          "name": "库存周转",
+          "question": "平均库存周转天数？",
+          "options": ["30天内", "30-60天", "60-90天", "超过90天"],
+          "weight": 1.4
+        },
+        {
+          "id": "SE002",
+          "name": "履约时效",
+          "question": "订单48小时发货率？",
+          "options": ["95%以上", "80-95%", "60-80%", "60%以下"],
+          "weight": 1.3
+        }
+      ]
+    },
+    
+    "content_capability": {
+      "name": "内容运营能力",
+      "description": "评估内容电商能力",
+      "dimensions": [
+        {
+          "id": "CC001",
+          "name": "内容产出能力",
+          "question": "月均内容产出量（图文/视频）？",
+          "options": ["200+", "50-200", "20-50", "20以下"],
+          "weight": 1.2
+        },
+        {
+          "id": "CC002",
+          "name": "直播能力",
+          "question": "自播/店播的GMV占比？",
+          "options": ["30%以上", "10-30%", "5-10%", "5%以下"],
+          "weight": 1.4
+        }
+      ]
+    },
+    
+    "talent_stability": {
+      "name": "人才稳定性",
+      "description": "评估电商关键岗位人才保留",
+      "dimensions": [
+        {
+          "id": "TS001",
+          "name": "运营人才流失率",
+          "question": "核心运营岗位年流失率？",
+          "options": ["15%以内", "15-30%", "30-50%", "50%以上"],
+          "weight": 1.5
+        },
+        {
+          "id": "TS002",
+          "name": "人才培养周期",
+          "question": "新员工达到独立作战的时间？",
+          "options": ["1个月内", "1-3个月", "3-6个月", "超过6个月"],
+          "weight": 1.2
+        }
+      ]
+    }
+  },
+
+  "industry_benchmarks": {
+    "conversion_rate": 5,
+    "return_rate": 10,
+    "customer_acquisition_cost_growth": 15,
+    "live_streaming_gmv_ratio": 30,
+    "private_domain_ratio": 20
+  },
+
+  "common_issues": [
+    {
+      "issue": "流量红利消退",
+      "symptoms": ["获客成本上升", "ROI下降", "增长放缓"],
+      "intervention": "私域建设、品牌升级、全域运营"
+    },
+    {
+      "issue": "直播转型困难",
+      "symptoms": ["自播效果差", "人才难招", "供应链跟不上"],
+      "intervention": "团队建设、话术优化、供应链弹性"
+    },
+    {
+      "issue": "人才流动性高",
+      "symptoms": ["经验难积累", "服务质量不稳", "培训成本高"],
+      "intervention": "激励机制、人才培养、文化建设"
+    }
+  ],
+
+  "recommended_models": [
+    "人货场分析",
+    "GMV拆解",
+    "AARRR增长模型",
+    "私域运营体系"
+  ],
+
+  "case_library": [
+    {
+      "case_id": "DEC001",
+      "title": "某服饰品牌私域运营",
+      "summary": "从公域到私域的精细化运营转型"
+    },
+    {
+      "case_id": "DEC002",
+      "title": "某食品电商直播崛起",
+      "summary": "直播电商从0到1的团队建设"
+    },
+    {
+      "case_id": "DEC003",
+      "title": "某美妆品牌内容营销",
+      "summary": "内容电商时代的内容能力建设"
+    }
+  ]
+}

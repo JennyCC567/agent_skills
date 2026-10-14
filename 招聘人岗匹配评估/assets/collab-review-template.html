@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="候选人协作评审报告">
+    <title>候选人协作评审报告</title>
+    <style>
+        /* ========== 基础样式 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        
+        /* ========== 容器 ========== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* ========== 头部 ========== */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .header .share-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+        }
+        
+        /* ========== 候选人信息 ========== */
+        .candidate-section {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .info-grid {
+            display: table;
+            width: 100%;
+        }
+        
+        .info-row {
+            display: table-row;
+        }
+        
+        .info-label {
+            display: table-cell;
+            width: 120px;
+            padding: 8px 0;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            display: table-cell;
+            padding: 8px 0;
+        }
+        
+        /* ========== 评分区域 ========== */
+        .rating-section {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .rating-item {
+            display: table;
+            width: 100%;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .rating-item:last-child {
+            border-bottom: none;
+        }
+        
+        .rating-name {
+            display: table-cell;
+            width: 150px;
+            font-weight: 500;
+        }
+        
+        .rating-bar {
+            display: table-cell;
+            vertical-align: middle;
+        }
+        
+        .rating-bar-inner {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .rating-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .rating-score {
+            display: table-cell;
+            width: 60px;
+            text-align: right;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        /* ========== 综合评分 ========== */
+        .overall-rating {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .overall-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .overall-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* ========== 评审意见 ========== */
+        .review-section {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .review-list {
+            list-style: none;
+        }
+        
+        .review-item {
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .review-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .reviewer {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .review-date {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+        
+        .review-content {
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        /* ========== 添加评审 ========== */
+        .add-review-section {
+            padding: 25px 30px;
+            background: #fafafa;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            display: inline-block;
+            padding: 10px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+        
+        /* ========== 页脚 ========== */
+        .footer {
+            padding: 20px 30px;
+            background: #f5f7fa;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* ========== 响应式 ========== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .candidate-section,
+            .rating-section,
+            .review-section,
+            .add-review-section {
+                padding: 20px 15px;
+            }
+            
+            .info-label {
+                width: 100px;
+            }
+            
+            .overall-score {
+                font-size: 36px;
+            }
+        }
+        
+        /* ========== 打印样式 ========== */
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .add-review-section {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>候选人协作评审报告</h1>
+            <div class="subtitle">多人在线协作评审，实时同步反馈意见</div>
+            <div class="share-info">
+                分享时间：{{share_date}} | 评审链接：{{share_url}}
+            </div>
+        </div>
+        
+        <!-- 候选人信息 -->
+        <div class="candidate-section">
+            <h2 class="section-title">候选人信息</h2>
+            <div class="info-grid">
+                <div class="info-row">
+                    <span class="info-label">姓名：</span>
+                    <span class="info-value">{{candidate_name}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">应聘岗位：</span>
+                    <span class="info-value">{{target_position}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">工作年限：</span>
+                    <span class="info-value">{{work_years}}年</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">最高学历：</span>
+                    <span class="info-value">{{education}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">匹配度：</span>
+                    <span class="info-value"><strong>{{match_score}}%</strong></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 评分区域 -->
+        <div class="rating-section">
+            <h2 class="section-title">综合评分</h2>
+            
+            <div class="rating-item">
+                <span class="rating-name">硬性条件匹配</span>
+                <div class="rating-bar">
+                    <div class="rating-bar-inner">
+                        <div class="rating-bar-fill" style="width: {{hard_match}}%;"></div>
+                    </div>
+                </div>
+                <span class="rating-score">{{hard_match}}分</span>
+            </div>
+            
+            <div class="rating-item">
+                <span class="rating-name">核心经验匹配</span>
+                <div class="rating-bar">
+                    <div class="rating-bar-inner">
+                        <div class="rating-bar-fill" style="width: {{core_exp}}%;"></div>
+                    </div>
+                </div>
+                <span class="rating-score">{{core_exp}}分</span>
+            </div>
+            
+            <div class="rating-item">
+                <span class="rating-name">专业技能匹配</span>
+                <div class="rating-bar">
+                    <div class="rating-bar-inner">
+                        <div class="rating-bar-fill" style="width: {{skill_match}}%;"></div>
+                    </div>
+                </div>
+                <span class="rating-score">{{skill_match}}分</span>
+            </div>
+            
+            <div class="rating-item">
+                <span class="rating-name">综合素质评分</span>
+                <div class="rating-bar">
+                    <div class="rating-bar-inner">
+                        <div class="rating-bar-fill" style="width: {{soft_skill}}%;"></div>
+                    </div>
+                </div>
+                <span class="rating-score">{{soft_skill}}分</span>
+            </div>
+            
+            <div class="overall-rating">
+                <div class="overall-score">{{overall_score}}</div>
+                <div class="overall-label">综合评分</div>
+            </div>
+        </div>
+        
+        <!-- 评审意见 -->
+        <div class="review-section">
+            <h2 class="section-title">评审意见 <span style="font-weight: normal; font-size: 12px; color: #999;">({{review_count}}条)</span></h2>
+            
+            <ul class="review-list">
+                {{#each reviews}}
+                <li class="review-item">
+                    <div class="reviewer">{{reviewer_name}}</div>
+                    <div class="review-date">{{review_date}}</div>
+                    <div class="review-content">{{review_content}}</div>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        
+        <!-- 添加评审 -->
+        <div class="add-review-section">
+            <h2 class="section-title">添加评审意见</h2>
+            <form id="reviewForm">
+                <div class="form-group">
+                    <label class="form-label">您的姓名</label>
+                    <input type="text" class="form-input" id="reviewerName" placeholder="请输入您的姓名" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">您的职位</label>
+                    <input type="text" class="form-input" id="reviewerTitle" placeholder="如：技术总监/HRBP">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">评审意见</label>
+                    <textarea class="form-textarea" id="reviewContent" placeholder="请输入您的评审意见..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">提交评审</button>
+            </form>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="footer">
+            本报告由 HR×AI Agent实战派 自动生成 | 候选人协作评审系统
+        </div>
+    </div>
+    
+    <script>
+        // 表单提交处理
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const reviewerName = document.getElementById('reviewerName').value;
+            const reviewerTitle = document.getElementById('reviewerTitle').value;
+            const reviewContent = document.getElementById('reviewContent').value;
+            
+            // 构造评审数据
+            const reviewData = {
+                reviewer: reviewerName,
+                title: reviewerTitle,
+                content: reviewContent,
+                timestamp: new Date().toISOString()
+            };
+            
+            // 输出JSON结果（供智能体处理）
+            console.log('评审数据：', JSON.stringify(reviewData, null, 2));
+            
+            alert('感谢您的评审意见！');
+            
+            // 清空表单
+            document.getElementById('reviewForm').reset();
+        });
+        
+        // 页面加载完成
+        console.log('候选人协作评审报告已加载');
+    </script>
+</body>
+</html>

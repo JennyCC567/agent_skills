@@ -1,0 +1,101 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "id": "string (required, UUID)",
+  "name": "string (required)",
+  "phone": "string (optional, E.164格式)",
+  "email": "string (optional, email格式)",
+  "gender": "string (optional, enum: male|female|other)",
+  "age": "integer (optional, >=18)",
+  "education_level": "string (required, enum: high_school|college|bachelor|master|phd)",
+  "education": [
+    {
+      "school": "string (required)",
+      "degree": "string (required)",
+      "major": "string (required)",
+      "start_date": "string (required, YYYY-MM)",
+      "end_date": "string (required, YYYY-MM)",
+      "is_top_university": "boolean (optional)"
+    }
+  ],
+  "experience_years": "integer (required, >=0)",
+  "skills": [
+    "string (required, 标准化技能标签)"
+  ],
+  "current_company": "string (optional, 标准化公司名)",
+  "current_job_title": "string (optional, 标准化职位名)",
+  "current_location": "string (optional, 城市)",
+  "employment_status": "string (optional, enum: employed|unemployed|job_seeking)",
+  "expected_salary": "integer (optional, 年薪，单位：元)",
+  "work_experience": [
+    {
+      "company": "string (required, 标准化公司名)",
+      "job_title": "string (required, 标准化职位名)",
+      "department": "string (optional)",
+      "industry": "string (optional, 标准化行业名)",
+      "start_date": "string (required, YYYY-MM)",
+      "end_date": "string (optional, YYYY-MM, null表示在职)",
+      "skills": [
+        "string (optional, 项目中使用的技能)"
+      ],
+      "achievements": [
+        "string (optional, 业绩描述)"
+      ],
+      "promotion": "boolean (optional, 是否有晋升)"
+    }
+  ],
+  "projects": [
+    {
+      "name": "string (required)",
+      "role": "string (required)",
+      "start_date": "string (required, YYYY-MM)",
+      "end_date": "string (optional, YYYY-MM)",
+      "description": "string (optional)",
+      "skills": [
+        "string (optional, 项目技能)"
+      ],
+      "achievements": [
+        "string (optional)"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "string (required)",
+      "issuer": "string (required)",
+      "issue_date": "string (required, YYYY-MM)",
+      "expiry_date": "string (optional, YYYY-MM)"
+    }
+  ],
+  "publications": [
+    {
+      "title": "string (required)",
+      "authors": [
+        "string (required)"
+      ],
+      "venue": "string (optional)",
+      "date": "string (required, YYYY-MM)",
+      "url": "string (optional, URL)"
+    }
+  ],
+  "patents": [
+    {
+      "title": "string (required)",
+      "patent_number": "string (required)",
+      "issue_date": "string (required, YYYY-MM)",
+      "inventors": [
+        "string (required)"
+      ]
+    }
+  ],
+  "soft_skills": [
+    "string (optional, 标准化软技能标签)"
+  ],
+  "work_style": "string (optional, 工作风格描述)",
+  "team_preference": "string (optional, 团队偏好描述)",
+  "risk_score": "float (optional, 0-1, 离职风险)",
+  "potential_score": "float (optional, 0-1, 潜力评分)",
+  "source": "string (required, 数据来源)",
+  "created_at": "string (required, ISO8601)",
+  "updated_at": "string (required, ISO8601)"
+}

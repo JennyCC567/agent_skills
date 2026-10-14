@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>八字命理深度解析报告</title>
+    <style>
+        :root {
+            /* --- 五行配色 (优化版) --- */
+            --wood: #2e7d32;  /* 明亮绿色 */
+            --fire: #d32f2f;  /* 丹红 */
+            --earth: #8d6e63; /* 土褐色 */
+            --metal: #c9a227; /* 明亮金色 */
+            --water: #1976d2; /* 明显蓝色 */
+            
+            /* --- 界面风格 --- */
+            --bg-color: #f7f5f0;     
+            --card-bg: #fffbf5;      
+            --border-color: #e6e0d0; 
+            --text-main: #4a4a4a;    
+            --text-light: #888888;
+            
+            /* --- 交互色 --- */
+            --primary-color: #8d4024; /* 印泥红 */
+            --active-bg: #9e3e32;
+            --active-text: #fffbf5;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-main);
+            background-image: radial-gradient(#e0ded8 1px, transparent 1px);
+            background-size: 20px 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 卡片风格 */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(166, 156, 142, 0.15);
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        .card::after {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid rgba(230, 224, 208, 0.6);
+            border-radius: 4px;
+            pointer-events: none;
+        }
+        
+        /* 标题 */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-family: "Kaiti SC", "STKaiti", "楷体", serif;
+            font-size: 28px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-family: "Kaiti SC", "STKaiti", "楷体", serif;
+            font-size: 1.3rem;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            color: #5d4037;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 18px;
+            background-color: var(--primary-color);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+        
+        /* 基础信息 */
+        .base-info {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-family: "Kaiti SC", "STKaiti", "楷体", serif;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .base-info span {
+            background: rgba(230, 224, 208, 0.4);
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        /* 八字排盘 */
+        .bazi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            text-align: center;
+            padding: 15px 10px;
+        }
+        
+        .bazi-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .bazi-col .label {
+            font-family: "Kaiti SC", "STKaiti", "楷体", serif;
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        
+        .bazi-col .gan,
+        .bazi-col .zhi {
+            font-family: "Kaiti SC", "STKaiti", "楷体", serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            padding: 5px 0;
+            width: 100%;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+        
+        /* 五行颜色 */
+        .c-wood { color: var(--wood); }
+        .c-fire { color: var(--fire); }
+        .c-earth { color: var(--earth); }
+        .c-metal { color: var(--metal); }
+        .c-water { color: var(--water); }
+        
+        /* 能量条 */
+        .energy-bar-container {
+            background: #eee;
+            height: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .energy-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+        
+        .score-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            color: white;
+            background-color: var(--primary-color);
+        }
+        
+        /* 喜忌标签 */
+        .element-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #eee;
+            font-weight: 500;
+        }
+        
+        .is-good {
+            background-color: rgba(62, 117, 59, 0.1);
+            color: var(--wood);
+            border-color: rgba(62, 117, 59, 0.3);
+        }
+        
+        .is-bad {
+            background-color: rgba(214, 64, 54, 0.1);
+            color: var(--fire);
+            border-color: rgba(214, 64, 54, 0.3);
+        }
+        
+        /* 建议列表 */
+        .advice-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .advice-item {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .advice-icon {
+            margin-right: 12px;
+            font-size: 18px;
+            min-width: 24px;
+        }
+        
+        /* 流年运势卡片 */
+        .year-card {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+            border-left: 4px solid #999;
+            position: relative;
+        }
+        
+        .year-card.excellent { border-left-color: var(--wood); }
+        .year-card.good { border-left-color: #7cb342; }
+        .year-card.normal { border-left-color: var(--earth); }
+        .year-card.bad { border-left-color: #ff9800; }
+        .year-card.terrible { border-left-color: var(--fire); }
+        
+        .year-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .year-title {
+            font-family: "Kaiti SC", "STKaiti", "楷体", serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .star-rating {
+            color: var(--metal);
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+        
+        .year-summary {
+            font-size: 14px;
+            margin: 10px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .fortune-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+        
+        .fortune-item {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            line-height: 1.6;
+        }
+        
+        .fortune-label {
+            font-weight: bold;
+            color: var(--text-light);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .year-tip {
+            margin-top: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            font-size: 13px;
+            border: 1px solid var(--border-color);
+            line-height: 1.6;
+        }
+        
+
+        .info-box {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            border-left: 3px solid var(--border-color);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .bazi-grid {
+                gap: 5px;
+                padding: 10px;
+            }
+            .bazi-col .gan,
+            .bazi-col .zhi {
+                font-size: 1.5rem;
+            }
+            .fortune-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>八字命理深度解析报告</h1>
+        <div class="base-info" style="justify-content: center; margin-top: 15px;">
+            <span>性别：{GENDER}</span>
+            <span>生成日期：{REPORT_DATE}</span>
+        </div>
+    </div>
+
+    <!-- 第一章：八字原局 -->
+    <div class="card">
+        <h2>第一章：八字原局</h2>
+        <div class="bazi-grid">
+            <div class="bazi-col">
+                <div class="label">年柱</div>
+                <div class="gan c-{YEAR_GAN_ELEMENT}">{YEAR_GAN}</div>
+                <div class="zhi c-{YEAR_ZHI_ELEMENT}">{YEAR_ZHI}</div>
+            </div>
+            <div class="bazi-col">
+                <div class="label">月柱</div>
+                <div class="gan c-{MONTH_GAN_ELEMENT}">{MONTH_GAN}</div>
+                <div class="zhi c-{MONTH_ZHI_ELEMENT}">{MONTH_ZHI}</div>
+            </div>
+            <div class="bazi-col">
+                <div class="label">日柱</div>
+                <div class="gan c-{DAY_GAN_ELEMENT}">{DAY_GAN}</div>
+                <div class="zhi c-{DAY_ZHI_ELEMENT}">{DAY_ZHI}</div>
+            </div>
+            <div class="bazi-col">
+                <div class="label">时柱</div>
+                <div class="gan c-{HOUR_GAN_ELEMENT}">{HOUR_GAN}</div>
+                <div class="zhi c-{HOUR_ZHI_ELEMENT}">{HOUR_ZHI}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二章：强弱定性 -->
+    <div class="card">
+        <h2>第二章：强弱定性</h2>
+        <p><strong>日主五行：</strong>{DAY_ELEMENT}</p>
+        <p><strong>能量状态：</strong><span class="score-badge">{STRENGTH_LEVEL}</span></p>
+        
+        <div class="energy-bar-container">
+            <div class="energy-bar-fill" style="width: {SCORE_PERCENT}%; background: {ENERGY_BAR_COLOR};"></div>
+        </div>
+        
+        <div class="info-box">
+            <strong>判定逻辑：</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li><strong>得令：</strong>{MONTH_SUPPORT} (权重50%)</li>
+                <li><strong>得地：</strong>{ROOT_SUPPORT}</li>
+                <li><strong>得势：</strong>{HELP_SUPPORT}</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 第三章：喜用神锁定 -->
+    <div class="card">
+        <h2>第三章：喜用神锁定</h2>
+        <p>经过原局计算及您的流年/喜好验证，最终结论如下：</p>
+        
+        <div style="margin: 20px 0;">
+            <div style="margin-bottom: 15px;">
+                <strong style="color: var(--wood);">🌟 您的喜用神（利好）：</strong><br>
+                <div style="margin-top: 8px;">
+                    {FAVORABLE_GODS}
+                </div>
+            </div>
+            
+            {UNFAVORABLE_SECTION}
+        </div>
+        
+        <p style="font-size: 14px; color: #666; font-style: italic; background: rgba(230, 224, 208, 0.3); padding: 10px; border-radius: 4px;">
+            💡 取用思路：本局采用了【{METHOD_NAME}】，{REASONING_SUMMARY}
+        </p>
+    </div>
+
+    <!-- 第四章：生活开运指南 -->
+    <div class="card">
+        <h2>第四章：生活开运指南</h2>
+        <ul class="advice-list">
+            <li class="advice-item">
+                <span class="advice-icon">🎨</span>
+                <div>
+                    <strong>幸运颜色：</strong>
+                    <div>{LUCKY_COLORS}</div>
+                </div>
+            </li>
+            <li class="advice-item">
+                <span class="advice-icon">🧭</span>
+                <div>
+                    <strong>有利方位：</strong>
+                    <div>{LUCKY_DIRECTIONS}</div>
+                </div>
+            </li>
+            <li class="advice-item">
+                <span class="advice-icon">🏢</span>
+                <div>
+                    <strong>适合行业：</strong>
+                    <div>{SUITABLE_INDUSTRIES}</div>
+                </div>
+            </li>
+            <li class="advice-item">
+                <span class="advice-icon">💡</span>
+                <div>
+                    <strong>特别建议：</strong>
+                    <div>{SPECIFIC_ADVICE}</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 第五章：当前大运分析 -->
+    <div class="card">
+        <h2>第五章：当前大运分析</h2>
+        <ul class="advice-list">
+            <li class="advice-item">
+                <span class="advice-icon">🎯</span>
+                <div>
+                    <strong>当前大运：</strong>
+                    <div>您目前正处于 {DAYUN_NAME} 大运（{DAYUN_AGE_RANGE}岁）</div>
+                </div>
+            </li>
+            <li class="advice-item">
+                <span class="advice-icon">⚖️</span>
+                <div>
+                    <strong>天干分析：</strong>
+                    <div>{DAYUN_GAN_ANALYSIS}</div>
+                </div>
+            </li>
+            <li class="advice-item">
+                <span class="advice-icon">🌍</span>
+                <div>
+                    <strong>地支分析：</strong>
+                    <div>{DAYUN_ZHI_ANALYSIS}</div>
+                </div>
+            </li>
+            <li class="advice-item">
+                <span class="advice-icon">🌟</span>
+                <div>
+                    <strong>整体评价：</strong>
+                    <div>{DAYUN_OVERALL}</div>
+                </div>
+            </li>
+            <li class="advice-item">
+                <span class="advice-icon">📊</span>
+                <div>
+                    <strong>大运特点：</strong>
+                    <div>{DAYUN_FEATURES}</div>
+                </div>
+            </li>
+            <li class="advice-item">
+                <span class="advice-icon">💡</span>
+                <div>
+                    <strong>大运策略建议：</strong>
+                    <div>{DAYUN_STRATEGY}</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 第六章：未来三年流年运势 -->
+    <div class="card">
+        <h2>第六章：未来三年流年运势</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            根据您的喜用神，结合当前大运及流年天干地支，为您详细推算未来三年的运势变化：
+        </p>
+        
+        <!-- 2026年 -->
+        <div class="year-card {YEAR_2026_CLASS}">
+            <div class="year-header">
+                <div class="year-title">2026年 丙午（火年）</div>
+                <div class="star-rating">{YEAR_2026_STARS}</div>
+            </div>
+            <p class="year-summary">{YEAR_2026_SUMMARY}</p>
+            
+            <div class="fortune-grid">
+                <div class="fortune-item">
+                    <div class="fortune-label">💼 事业运</div>
+                    <div>{YEAR_2026_CAREER}</div>
+                </div>
+                <div class="fortune-item">
+                    <div class="fortune-label">💰 财运</div>
+                    <div>{YEAR_2026_WEALTH}</div>
+                </div>
+                <div class="fortune-item">
+                    <div class="fortune-label">💕 感情运</div>
+                    <div>{YEAR_2026_LOVE}</div>
+                </div>
+                <div class="fortune-item">
+                    <div class="fortune-label">🏥 健康运</div>
+                    <div>{YEAR_2026_HEALTH}</div>
+                </div>
+            </div>
+            
+            <div class="year-tip">
+                <strong>📌 重点提示：</strong>{YEAR_2026_TIP}
+            </div>
+        </div>
+
+        <!-- 2027年 -->
+        <div class="year-card {YEAR_2027_CLASS}">
+            <div class="year-header">
+                <div class="year-title">2027年 丁未（火土年）</div>
+                <div class="star-rating">{YEAR_2027_STARS}</div>
+            </div>
+            <p class="year-summary">{YEAR_2027_SUMMARY}</p>
+            
+            <div class="fortune-grid">
+                <div class="fortune-item">
+                    <div class="fortune-label">💼 事业运</div>
+                    <div>{YEAR_2027_CAREER}</div>
+                </div>
+                <div class="fortune-item">
+                    <div class="fortune-label">💰 财运</div>
+                    <div>{YEAR_2027_WEALTH}</div>
+                </div>
+                <div class="fortune-item">
+                    <div class="fortune-label">💕 感情运</div>
+                    <div>{YEAR_2027_LOVE}</div>
+                </div>
+                <div class="fortune-item">
+                    <div class="fortune-label">🏥 健康运</div>
+                    <div>{YEAR_2027_HEALTH}</div>
+                </div>
+            </div>
+            
+            <div class="year-tip">
+                <strong>📌 重点提示：</strong>{YEAR_2027_TIP}
+            </div>
+        </div>
+
+        <!-- 2028年 -->
+        <div class="year-card {YEAR_2028_CLASS}">
+            <div class="year-header">
+                <div class="year-title">2028年 戊申（土金年）</div>
+                <div class="star-rating">{YEAR_2028_STARS}</div>
+            </div>
+            <p class="year-summary">{YEAR_2028_SUMMARY}</p>
+            
+            <div class="fortune-grid">
+                <div class="fortune-item">
+                    <div class="fortune-label">💼 事业运</div>
+                    <div>{YEAR_2028_CAREER}</div>
+                </div>
+                <div class="fortune-item">
+                    <div class="fortune-label">💰 财运</div>
+                    <div>{YEAR_2028_WEALTH}</div>
+                </div>
+                <div class="fortune-item">
+                    <div class="fortune-label">💕 感情运</div>
+                    <div>{YEAR_2028_LOVE}</div>
+                </div>
+                <div class="fortune-item">
+                    <div class="fortune-label">🏥 健康运</div>
+                    <div>{YEAR_2028_HEALTH}</div>
+                </div>
+            </div>
+            
+            <div class="year-tip">
+                <strong>📌 重点提示：</strong>{YEAR_2028_TIP}
+            </div>
+        </div>
+    </div>
+
+    <!-- 重要说明 -->
+    <div style="background: rgba(230, 224, 208, 0.4); padding: 18px; border-radius: 8px; margin-top: 20px; font-size: 13px; border: 1px solid var(--border-color);">
+        <p style="margin: 5px 0;"><strong>📖 阅读说明：</strong></p>
+        <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>星级评分：★★★★★为最佳，★为需谨慎</li>
+            <li>流年运势会受大运影响，需结合您当前大运综合判断</li>
+            <li>八字命理是人生参考指南，非绝对宿命，三分天注定，七分靠打拼</li>
+            <li>建议在运势较好的年份积极进取，运势欠佳时稳健守成</li>
+        </ul>
+    </div>
+    
+    <div style="text-align: center; color: #999; font-size: 12px; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+        <p style="font-family: 'Kaiti SC', 'STKaiti', '楷体', serif;">Powered by AI Bazi Analyst</p>
+        <p>本报告仅供参考，不构成任何投资、法律、医疗等专业建议</p>
+    </div>
+</div>
+
+</body>
+</html>

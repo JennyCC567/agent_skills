@@ -1,0 +1,155 @@
+{
+  "industry": "制造业",
+  "industry_code": "MANUFACTURING",
+  "description": "适用于制造业企业OD诊断模板，包含精益生产、供应链协同、质量管理、数字化转型等指标",
+  
+  "company_profile": {
+    "typical_scale": "200-10000人",
+    "life_stage": "成长型/成熟型",
+    "org_structure": "职能制/事业部制/矩阵制",
+    "typical_challenges": [
+      "精益转型阻力",
+      "供应链协同效率",
+      "数字化能力不足",
+      "技术工人断层",
+      "国际化运营挑战"
+    ]
+  },
+
+  "diagnosis_modules": {
+    "lean_operations": {
+      "name": "精益运营能力",
+      "description": "评估企业精益生产和管理水平",
+      "dimensions": [
+        {
+          "id": "LO001",
+          "name": "精益工具应用",
+          "question": "企业精益工具（5S/看板/价值流）的应用程度？",
+          "options": ["全面应用", "部分应用", "试点阶段", "未开始"],
+          "weight": 1.3
+        },
+        {
+          "id": "LO002",
+          "name": "持续改善文化",
+          "question": "一线员工参与改善提案的活跃度？",
+          "options": ["活跃，人均2+提案/年", "较活跃", "偶尔", "几乎没有"],
+          "weight": 1.2
+        }
+      ]
+    },
+    
+    "supply_chain_agility": {
+      "name": "供应链协同",
+      "description": "评估供应链的效率和响应能力",
+      "dimensions": [
+        {
+          "id": "SC001",
+          "name": "供应商关系",
+          "question": "与核心供应商的合作关系深度？",
+          "options": ["战略合作伙伴", "优先供应商", "普通交易关系", "竞争关系"],
+          "weight": 1.4
+        },
+        {
+          "id": "SC002",
+          "name": "信息共享程度",
+          "question": "供应链上下游信息共享水平？",
+          "options": ["实时共享", "定期共享", "偶尔共享", "不共享"],
+          "weight": 1.3
+        }
+      ]
+    },
+    
+    "digital_capability": {
+      "name": "数字化能力",
+      "description": "评估企业数字化转型程度",
+      "dimensions": [
+        {
+          "id": "DC001",
+          "name": "数字化覆盖",
+          "question": "核心业务环节数字化程度？",
+          "options": ["全面数字化", "大部分数字化", "部分环节", "手工为主"],
+          "weight": 1.4
+        },
+        {
+          "id": "DC002",
+          "name": "数据驱动决策",
+          "question": "管理层决策依赖数据的程度？",
+          "options": ["基于数据决策", "参考数据", "经验为主", "直觉判断"],
+          "weight": 1.2
+        }
+      ]
+    },
+    
+    "talent_succession": {
+      "name": "人才梯队建设",
+      "description": "评估关键岗位人才储备",
+      "dimensions": [
+        {
+          "id": "TS001",
+          "name": "技术工人储备",
+          "question": "关键技术工种的人才储备情况？",
+          "options": ["充足", "基本满足", "部分短缺", "严重短缺"],
+          "weight": 1.5
+        },
+        {
+          "id": "TS002",
+          "name": "管理层培养",
+          "question": "中基层管理者的培养体系完善度？",
+          "options": ["完善", "较完善", "初步建立", "无体系"],
+          "weight": 1.2
+        }
+      ]
+    }
+  },
+
+  "industry_benchmarks": {
+    "oee_target": 85,
+    "inventory_turnover": 8,
+    "on_time_delivery": 95,
+    "quality_rate": 99.5,
+    "employee_stability": 92
+  },
+
+  "common_issues": [
+    {
+      "issue": "精益转型阻力",
+      "symptoms": ["员工抵触", "执行走样", "效果难持续"],
+      "intervention": "领导层示范、全员参与、激励机制"
+    },
+    {
+      "issue": "数字化人才短缺",
+      "symptoms": ["系统难用", "数据不准", "分析不足"],
+      "intervention": "外部引进、内部培养、校企合作"
+    },
+    {
+      "issue": "技术传承断层",
+      "symptoms": ["老技工退休", "经验流失", "质量波动"],
+      "intervention": "知识管理、师徒制、技能认证"
+    }
+  ],
+
+  "recommended_models": [
+    "精益生产（Lean）",
+    "六西格玛",
+    "TOC约束理论",
+    "BLM战略解码"
+  ],
+
+  "case_library": [
+    {
+      "case_id": "MFG001",
+      "title": "某汽车零部件精益转型",
+      "summary": "通过精益生产实现效率提升35%"
+    },
+    {
+      "case_id": "MFG002",
+      "title": "某电子制造数字化升级",
+      "summary": "智能制造转型与组织能力匹配"
+    },
+    {
+      "case_id": "MFG003",
+      "title": "某装备制造战略解码",
+      "summary": "新业务战略下的组织架构调整"
+    }
+  ]
+}

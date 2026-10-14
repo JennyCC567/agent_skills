@@ -1,0 +1,361 @@
+{
+  "dashboard": {
+    "title": "AI 人才 Mapping 仪表板",
+    "version": "1.0",
+    "layout": {
+      "type": "grid",
+      "columns": 3,
+      "rows": 4
+    },
+    "widgets": [
+      {
+        "id": "overview_metrics",
+        "type": "metrics",
+        "title": "概览指标",
+        "position": {
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 3
+        },
+        "metrics": [
+          {
+            "label": "总人才数",
+            "value": "{{total_talent_count}}",
+            "trend": "+{{talent_growth}}%",
+            "color": "blue"
+          },
+          {
+            "label": "本月新增",
+            "value": "{{new_talent_this_month}}",
+            "trend": "+{{new_talent_growth}}%",
+            "color": "green"
+          },
+          {
+            "label": "本月流失",
+            "value": "{{turnover_this_month}}",
+            "trend": "-{{turnover_change}}%",
+            "color": "red"
+          },
+          {
+            "label": "匹配成功率",
+            "value": "{{match_success_rate}}%",
+            "trend": "+{{match_improvement}}%",
+            "color": "purple"
+          },
+          {
+            "label": "平均响应时间",
+            "value": "{{avg_response_time}}s",
+            "trend": "-{{response_improvement}}%",
+            "color": "orange"
+          },
+          {
+            "label": "系统可用性",
+            "value": "{{system_availability}}%",
+            "trend": "+{{availability_improvement}}%",
+            "color": "green"
+          }
+        ]
+      },
+      {
+        "id": "talent_location_map",
+        "type": "map",
+        "title": "人才地域分布",
+        "position": {
+          "row": 2,
+          "col": 1,
+          "rowspan": 2,
+          "colspan": 2
+        },
+        "data_source": "talent_data",
+        "visualization": {
+          "map_type": "china",
+          "color_scheme": "heat",
+          "hover_info": ["city", "count", "percentage"]
+        }
+      },
+      {
+        "id": "department_distribution",
+        "type": "pie",
+        "title": "部门分布",
+        "position": {
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        "data_source": "talent_data",
+        "visualization": {
+          "group_by": "department",
+          "show_percentage": true,
+          "color_scheme": "category"
+        }
+      },
+      {
+        "id": "level_distribution",
+        "type": "bar",
+        "title": "层级分布",
+        "position": {
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        "data_source": "talent_data",
+        "visualization": {
+          "x_axis": "level",
+          "y_axis": "count",
+          "color_scheme": "gradient"
+        }
+      },
+      {
+        "id": "skill_density_matrix",
+        "type": "heatmap",
+        "title": "技能密度矩阵",
+        "position": {
+          "row": 4,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        "data_source": "talent_data",
+        "visualization": {
+          "x_axis": "department",
+          "y_axis": "skill",
+          "color_scheme": "heat",
+          "cell_value": "count"
+        }
+      },
+      {
+        "id": "talent_flow_sankey",
+        "type": "sankey",
+        "title": "人才流动",
+        "position": {
+          "row": 4,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        "data_source": "flow_data",
+        "visualization": {
+          "nodes": ["department", "level"],
+          "link_value": "flow_count"
+        }
+      },
+      {
+        "id": "turnover_trend",
+        "type": "line",
+        "title": "离职率趋势",
+        "position": {
+          "row": 5,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        "data_source": "turnover_data",
+        "visualization": {
+          "x_axis": "month",
+          "y_axis": "turnover_rate",
+          "show_trend": true,
+          "color_scheme": "line"
+        }
+      },
+      {
+        "id": "salary_distribution",
+        "type": "histogram",
+        "title": "薪酬分布",
+        "position": {
+          "row": 5,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        "data_source": "salary_data",
+        "visualization": {
+          "x_axis": "salary_range",
+          "y_axis": "count",
+          "color_scheme": "bar"
+        }
+      },
+      {
+        "id": "critical_position_gaps",
+        "type": "table",
+        "title": "关键岗位缺口",
+        "position": {
+          "row": 6,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 3
+        },
+        "data_source": "gap_data",
+        "columns": [
+          {
+            "key": "position",
+            "label": "岗位"
+          },
+          {
+            "key": "current",
+            "label": "现有人数"
+          },
+          {
+            "key": "required",
+            "label": "需求人数"
+          },
+          {
+            "key": "gap",
+            "label": "缺口数"
+          },
+          {
+            "key": "gap_rate",
+            "label": "缺口率"
+          },
+          {
+            "key": "urgency",
+            "label": "紧急度"
+          }
+        ],
+        "sort_by": "gap_rate",
+        "sort_order": "desc"
+      },
+      {
+        "id": "warning_alerts",
+        "type": "alert",
+        "title": "预警信息",
+        "position": {
+          "row": 7,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 3
+        },
+        "alerts": [
+          {
+            "type": "high_risk",
+            "title": "核心人才流失预警",
+            "message": "{{high_risk_personnel_count}} 位核心人才存在高流失风险",
+            "action": "查看详情"
+          },
+          {
+            "type": "medium_risk",
+            "title": "关键岗位缺口预警",
+            "message": "{{critical_gap_count}} 个关键岗位存在人才缺口",
+            "action": "查看详情"
+          },
+          {
+            "type": "info",
+            "title": "竞品挖角预警",
+            "message": "{{competitor_poaching_count}} 位关键人才可能被竞品挖角",
+            "action": "查看详情"
+          }
+        ]
+      },
+      {
+        "id": "top_candidates",
+        "type": "card",
+        "title": "推荐候选人",
+        "position": {
+          "row": 8,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 3
+        },
+        "cards": [
+          {
+            "name": "{{candidate_name_1}}",
+            "title": "{{current_job_title_1}}",
+            "company": "{{current_company_1}}",
+            "match_score": "{{match_score_1}}%",
+            "skills": ["{{skill_1}}", "{{skill_2}}", "{{skill_3}}"],
+            "reason": "{{match_reason_1}}"
+          },
+          {
+            "name": "{{candidate_name_2}}",
+            "title": "{{current_job_title_2}}",
+            "company": "{{current_company_2}}",
+            "match_score": "{{match_score_2}}%",
+            "skills": ["{{skill_1}}", "{{skill_2}}", "{{skill_3}}"],
+            "reason": "{{match_reason_2}}"
+          },
+          {
+            "name": "{{candidate_name_3}}",
+            "title": "{{current_job_title_3}}",
+            "company": "{{current_company_3}}",
+            "match_score": "{{match_score_3}}%",
+            "skills": ["{{skill_1}}", "{{skill_2}}", "{{skill_3}}"],
+            "reason": "{{match_reason_3}}"
+          }
+        ]
+      }
+    ],
+    "filters": [
+      {
+        "id": "department_filter",
+        "type": "select",
+        "label": "部门",
+        "options": [
+          {"value": "all", "label": "全部"},
+          {"value": "AI_Lab", "label": "AI Lab"},
+          {"value": "Engineering", "label": "工程部"},
+          {"value": "Product", "label": "产品部"}
+        ]
+      },
+      {
+        "id": "level_filter",
+        "type": "select",
+        "label": "层级",
+        "options": [
+          {"value": "all", "label": "全部"},
+          {"value": "junior", "label": "初级"},
+          {"value": "middle", "label": "中级"},
+          {"value": "senior", "label": "高级"},
+          {"value": "expert", "label": "专家"}
+        ]
+      },
+      {
+        "id": "location_filter",
+        "type": "select",
+        "label": "地域",
+        "options": [
+          {"value": "all", "label": "全部"},
+          {"value": "Beijing", "label": "北京"},
+          {"value": "Shanghai", "label": "上海"},
+          {"value": "Shenzhen", "label": "深圳"}
+        ]
+      },
+      {
+        "id": "date_range_filter",
+        "type": "date_range",
+        "label": "时间范围",
+        "default_value": "last_30_days"
+      }
+    ],
+    "actions": [
+      {
+        "id": "export_report",
+        "type": "button",
+        "label": "导出报告",
+        "action": "export_pdf"
+      },
+      {
+        "id": "refresh_data",
+        "type": "button",
+        "label": "刷新数据",
+        "action": "refresh"
+      },
+      {
+        "id": "settings",
+        "type": "button",
+        "label": "设置",
+        "action": "open_settings"
+      }
+    ],
+    "theme": {
+      "primary_color": "#2563eb",
+      "secondary_color": "#7c3aed",
+      "success_color": "#10b981",
+      "warning_color": "#f59e0b",
+      "error_color": "#ef4444",
+      "background_color": "#ffffff",
+      "text_color": "#1f2937"
+    }
+  }
+}

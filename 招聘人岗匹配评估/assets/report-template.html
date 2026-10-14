@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简历分析报告 - {候选人姓名}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .report-date {
+            text-align: right;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .candidate-info {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .candidate-info p {
+            margin: 8px 0;
+            font-size: 1.1em;
+        }
+
+        .candidate-info strong {
+            color: #2c3e50;
+            display: inline-block;
+            width: 120px;
+        }
+
+        .match-score {
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: #fff;
+            font-size: 2em;
+            font-weight: bold;
+            float: left;
+            margin-right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            line-height: 120px;
+        }
+
+        .score-circle .unit {
+            font-size: 0.4em;
+            font-weight: normal;
+            display: block;
+            line-height: 1.2;
+            margin-top: -30px;
+        }
+
+        .score-info {
+            overflow: hidden;
+            padding-top: 20px;
+        }
+
+        .score-info p {
+            font-size: 1.1em;
+            margin: 8px 0;
+        }
+
+        .decision-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .decision-high {
+            background-color: #27ae60;
+        }
+
+        .decision-medium {
+            background-color: #f39c12;
+        }
+
+        .decision-low {
+            background-color: #e74c3c;
+        }
+
+        .section {
+            margin: 25px 0;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            background-color: #fafafa;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .result-match {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .result-partial {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .result-exceed {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .result-mismatch {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .download-buttons {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .download-buttons button {
+            margin: 5px 10px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-html {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .btn-print {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        .download-buttons button:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .compliance {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #fff8e1;
+            border: 1px solid #ffd700;
+            border-radius: 6px;
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffebee;
+            border: 1px solid #ef5350;
+            border-radius: 6px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .disclaimer strong {
+            color: #c62828;
+        }
+
+        .disclaimer p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .compliance strong {
+            color: #f39c12;
+        }
+
+        .compliance p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* 移动端适配（P2优先级） */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            .container {
+                padding: 15px;
+                margin: 10px;
+                border-radius: 6px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            h2 {
+                font-size: 1.3em;
+            }
+
+            h3 {
+                font-size: 1.1em;
+            }
+
+            .candidate-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .score-circle {
+                float: none;
+                margin: 15px auto;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+            }
+
+            .download-buttons button {
+                width: 100%;
+                margin: 8px 0;
+                padding: 14px 20px;
+                font-size: 14px;
+            }
+
+            table {
+                font-size: 12px;
+                overflow-x: auto;
+                display: block;
+            }
+
+            th, td {
+                padding: 8px 4px;
+                word-break: break-word;
+            }
+
+            .section {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .strengths-grid, .concerns-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .interview-tips li {
+                font-size: 13px;
+            }
+
+            .data-security {
+                padding: 12px;
+            }
+
+            .disclaimer {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 10px;
+                margin: 5px;
+            }
+
+            h1 {
+                font-size: 1.3em;
+            }
+
+            h2 {
+                font-size: 1.2em;
+            }
+
+            .candidate-info {
+                padding: 10px;
+            }
+
+            .info-item {
+                font-size: 13px;
+            }
+
+            .download-buttons button {
+                font-size: 13px;
+                padding: 12px 16px;
+            }
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+                font-size: 12px;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .download-buttons {
+                display: none;
+            }
+
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+
+            table {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>候选人分析报告</h1>
+        <div class="report-date"><strong>生成日期：</strong>{生成日期}</div>
+
+        <div class="candidate-info">
+            <p><strong>候选人姓名：</strong>{候选人姓名}</p>
+            <p><strong>投递岗位：</strong>{投递岗位}</p>
+            <p><strong>工作经验：</strong>{工作经验}</p>
+            <p><strong>当前公司：</strong>{当前公司}</p>
+            <p><strong>当前职位：</strong>{当前职位}</p>
+            <p><strong>最高学历：</strong>{最高学历}</p>
+            <p><strong>毕业院校：</strong>{毕业院校}</p>
+            <p><strong>专业：</strong>{专业}</p>
+            <p><strong>联系电话：</strong>{电话}</p>
+            <p><strong>电子邮箱：</strong>{邮箱}</p>
+        </div>
+
+        <div class="match-score">
+            <div class="score-circle">
+                {匹配度}
+                <span class="unit">%</span>
+            </div>
+            <div class="score-info">
+                <p style="font-size: 1.5em; margin-bottom: 10px;">
+                    匹配等级：<strong style="color: #3498db;">{匹配等级}</strong>
+                </p>
+                <p>
+                    决策建议：
+                    <span class="decision-badge decision-{决策建议等级}">
+                        {决策建议}
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">✅ 优势摘要</div>
+            <ul>
+                {优势列表}
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">⚠️ 劣势提示</div>
+            <ul>
+                {劣势列表}
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🎯 面试考察点</div>
+            <ol>
+                {面试考察点列表}
+            </ol>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📊 详细匹配分析</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>维度</th>
+                        <th>简历值</th>
+                        <th>岗位要求</th>
+                        <th>匹配结果</th>
+                        <th>权重</th>
+                        <th>得分</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {匹配分析表格行}
+                </tbody>
+            </table>
+            <p style="margin-top: 15px; font-weight: bold; text-align: right;">
+                综合得分：{综合得分} 分
+            </p>
+        </div>
+
+        <div class="compliance">
+            <p><strong>【数据安全合规提示】</strong></p>
+            <p>- 您上传的简历文件已通过 HTTPS 加密传输，处理完成后立即自动删除。</p>
+            <p>- 所有敏感信息（手机号、身份证号等）已自动脱敏，确保隐私安全。</p>
+            <p>- 本系统符合《个人信息保护法》要求，仅用于招聘评估，不保存任何原始数据。</p>
+            <p>- 如有疑问，请联系系统管理员。</p>
+        </div>
+
+        <div class="disclaimer">
+            <p><strong>【重要提示与免责申明】</strong></p>
+            <p><strong>一、辅助工具性质：</strong>本报告为本技能输出的辅助分析结果，仅为招聘工作提供参考，不构成招聘录用、人才评估、薪酬定级的最终决策依据。最终决策需由使用方完成人工核验与背景调查后自行作出。</p>
+            <p><strong>二、准确性限制：</strong>受技术算法边界、简历原始信息完整性/真实性等客观因素限制，本报告无法保证 100% 识别准确率与信息完整性，不对简历原始内容的真实性、合法性、完整性承担任何连带责任。</p>
+            <p><strong>三、法律合规要求：</strong>使用方需严格遵守《中华人民共和国个人信息保护法》等相关法律法规，确保已获得简历当事人的合法授权，具备处理相关个人信息的完整权限，因违规处理个人信息产生的全部法律责任与纠纷，均由使用方自行承担。</p>
+            <p><strong>四、合法使用范围：</strong>使用方不得将本报告用于任何非法用途，违规使用产生的全部后果与责任，均由使用方自行承担。</p>
+        </div>
+
+        <div class="download-buttons">
+            <button class="btn-html" onclick="downloadHTML()">📄 下载报告（HTML格式）</button>
+            <button class="btn-print" onclick="window.print()">🖨️ 打印/导出PDF</button>
+        </div>
+    </div>
+
+    <script>
+    /**
+     * 下载 HTML 版报告
+     */
+    function downloadHTML() {
+        const btn = document.querySelector('.btn-html');
+        const originalText = btn.textContent;
+        
+        // 显示加载状态
+        btn.textContent = '⏳ 正在生成文件...';
+        btn.disabled = true;
+        
+        // 克隆整个文档，确保包含完整的头部信息
+        const htmlContent = document.documentElement.outerHTML;
+
+        // 创建 Blob 时明确指定 UTF-8 编码
+        const blob = new Blob([htmlContent], {
+            type: 'text/html;charset=utf-8'
+        });
+
+        const now = new Date();
+        const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+        const htmlFileName = `简历分析报告_HTML_{候选人姓名}_${dateStr}.html`;
+
+        // 使用原生 Blob 下载
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = htmlFileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        // 恢复按钮状态
+        btn.textContent = '✓ HTML 已下载';
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }, 2000);
+    }
+    </script>
+</body>
+</html>
